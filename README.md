@@ -1,4 +1,4 @@
-# Liquid Ring Noise - Liquid noise ring background
+# Liquid Ring Noise - Liquid noise background
 
 Make a liquid ring noise background with or without color using GEGL
 
