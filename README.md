@@ -27,6 +27,10 @@ GIMP 2.10 users will only find this in GEGL Operation drop down list and it will
 
 ## Compiling and Installing
 
+Just run build_plugin_linux.sh or build_plugin_windows.sh 
+
+or manually
+
 ### Linux
 
 To compile and install you will need the GEGL header files (`libgegl-dev` on
@@ -53,6 +57,11 @@ pacman --noconfirm -S base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-mes
 
 Then build the same way you would on Linux:
 
+```bash
+meson setup --buildtype=release build
+ninja -C build
+```
+
 ## More previews of this based plugin 
 
 ![image](https://github.com/user-attachments/assets/fa6562c6-237b-4915-b7f0-f907179e9739)
@@ -62,9 +71,4 @@ Then build the same way you would on Linux:
 ![image](https://github.com/user-attachments/assets/a497cfc9-d21f-4e62-b313-76bba30630d4)
 
 
-
-```bash
-meson setup --buildtype=release build
-ninja -C build
-```
 
