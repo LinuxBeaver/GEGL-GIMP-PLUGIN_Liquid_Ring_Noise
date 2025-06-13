@@ -2,10 +2,9 @@
 
 Make a liquid ring noise background with or without color using GEGL
 
-![image](https://github.com/user-attachments/assets/d0d190a1-10de-42d3-b71c-518be91fcbd6
+![image](https://github.com/user-attachments/assets/d0d190a1-10de-42d3-b71c-518be91fcbd6)
 
 ![image](https://github.com/user-attachments/assets/b8da05e2-c0f4-4a0d-98d6-595f4fdad74e)
-
 
 
 
