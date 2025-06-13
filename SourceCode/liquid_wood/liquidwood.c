@@ -228,7 +228,7 @@ update_graph (GeglOperation *operation)
 default: blend = state->grainmerge;
 }
 
-  gegl_node_link_many (state->input,  state->noisesolid, state->graph, state->idref, state->normal, blend, state->crop, state->output,  NULL);
+  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend, state->crop, state->output,  NULL);
   gegl_node_link_many (state->idref, state->edge, state->opacity1, state->opacity2,  NULL);
   gegl_node_connect (state->normal, "aux", state->opacity2, "output");
   gegl_node_connect (blend, "aux", state->color, "output");
