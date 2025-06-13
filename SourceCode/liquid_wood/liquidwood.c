@@ -105,7 +105,6 @@ ui_meta ("visible", "!blendmode {none}")
 #include "gegl-op.h"
 
 
-
 typedef struct
 {
  GeglNode *input;
@@ -122,7 +121,6 @@ typedef struct
  GeglNode *lchcolor;
  GeglNode *overlay;
  GeglNode *softlight;
- GeglNode *crop;
  GeglNode *color;
  GeglNode *none;
  GeglNode *output;
@@ -158,8 +156,6 @@ static void attach (GeglOperation *operation)
 
   state->edge   = gegl_node_new_child (gegl, "operation", "gegl:edge",  NULL);
 
-
-  state->crop   = gegl_node_new_child (gegl, "operation", "gegl:crop",  NULL);
 
 
   state->color   = gegl_node_new_child (gegl, "operation", "gegl:color",  NULL);
@@ -228,11 +224,11 @@ update_graph (GeglOperation *operation)
 default: blend = state->grainmerge;
 }
 
-  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend, state->crop, state->output,  NULL);
+  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend,  state->output,  NULL);
   gegl_node_link_many (state->idref, state->edge, state->opacity1, state->opacity2,  NULL);
   gegl_node_connect (state->normal, "aux", state->opacity2, "output");
   gegl_node_connect (blend, "aux", state->color, "output");
-  gegl_node_connect (state->crop, "aux", state->input, "output");
+
 
 }
 
