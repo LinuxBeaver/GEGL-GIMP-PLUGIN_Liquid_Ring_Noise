@@ -2,11 +2,7 @@
 
 Make a liquid ring noise background with or without color using GEGL
 
-![image](https://github.com/user-attachments/assets/d0d190a1-10de-42d3-b71c-518be91fcbd6)
-
 ![image](https://github.com/user-attachments/assets/b8da05e2-c0f4-4a0d-98d6-595f4fdad74e)
-
-
 
 ## Directory to put Binaries (They do NOT go in the normal plugins folder)
 
@@ -68,6 +64,8 @@ ninja -C build
 ![image](https://github.com/user-attachments/assets/1f376425-3699-405f-b067-0f9f7e67819f)
 
 ![image](https://github.com/user-attachments/assets/a497cfc9-d21f-4e62-b313-76bba30630d4)
+
+![image](https://github.com/user-attachments/assets/d0d190a1-10de-42d3-b71c-518be91fcbd6)
 
 
 
