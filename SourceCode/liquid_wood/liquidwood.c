@@ -91,6 +91,12 @@ property_double (glimmer, _("Glimmer effect"), 1.0)
 
 property_seed (seed, _("Random seed"), rand)
 
+property_double (overlay, _("Overlay selected color"), 0.0)
+    description (_("Put a color overlay same as the selected color over the liquid noise to dull it "))
+    value_range (0.0, 1.0)
+    ui_range    (0.0, 1.0)
+ui_meta ("visible", "!blendmode {none}")
+
 property_color (color, _("Color"), "#a976ff")
     description (_("Color of the liquid ring noise"))
 ui_meta ("visible", "!blendmode {none}")
@@ -110,10 +116,14 @@ typedef struct
  GeglNode *input;
  GeglNode *noisesolid;
  GeglNode *idref;
+ GeglNode *idref2;
  GeglNode *opacity1;
  GeglNode *opacity2;
+ GeglNode *opacity3;
+ GeglNode *opacity4;
  GeglNode *graph;
  GeglNode *normal;
+ GeglNode *normal2;
  GeglNode *edge;
  GeglNode *grainmerge;
  GeglNode *multiply;
@@ -122,6 +132,8 @@ typedef struct
  GeglNode *overlay;
  GeglNode *softlight;
  GeglNode *color;
+ GeglNode *color2;
+ GeglNode *nocolor2;
  GeglNode *none;
  GeglNode *output;
 }State;
@@ -151,19 +163,36 @@ static void attach (GeglOperation *operation)
 
   state->idref   = gegl_node_new_child (gegl, "operation", "gegl:nop",  NULL);
 
+  state->nocolor2   = gegl_node_new_child (gegl, "operation", "gegl:nop",  NULL);
+
+
+
+
+  state->idref2   = gegl_node_new_child (gegl, "operation", "gegl:nop",  NULL);
+
+
 
   state->normal  = gegl_node_new_child (gegl, "operation", "gegl:over",  NULL);
 
   state->edge   = gegl_node_new_child (gegl, "operation", "gegl:edge",  NULL);
 
+  state->normal2   = gegl_node_new_child (gegl, "operation", "gegl:over",  NULL);
 
 
   state->color   = gegl_node_new_child (gegl, "operation", "gegl:color",  NULL);
 
 
+  state->color2   = gegl_node_new_child (gegl, "operation", "gegl:color",  NULL);
+
+
+
   state->opacity1   = gegl_node_new_child (gegl, "operation", "gegl:opacity",  NULL);
 
   state->opacity2   = gegl_node_new_child (gegl, "operation", "gegl:opacity", "value", 0.55,  NULL);
+
+  state->opacity3   = gegl_node_new_child (gegl, "operation", "gegl:opacity",  NULL);
+
+  state->opacity4   = gegl_node_new_child (gegl, "operation", "gegl:opacity", "value", 0.80,  NULL);
 
   state->none   = gegl_node_new_child (gegl, "operation", "gegl:dst",  NULL);
 
@@ -199,7 +228,8 @@ state->softlight = gegl_node_new_child (gegl,
  gegl_operation_meta_redirect (operation, "seed", state->noisesolid,  "seed");
  gegl_operation_meta_redirect (operation, "glimmer", state->opacity1,  "value");
  gegl_operation_meta_redirect (operation, "color", state->color,  "value");
-
+ gegl_operation_meta_redirect (operation, "color", state->color2,  "value");
+ gegl_operation_meta_redirect (operation, "overlay", state->opacity3,  "value");
 
 }
 
@@ -209,6 +239,7 @@ update_graph (GeglOperation *operation)
   GeglProperties *o = GEGL_PROPERTIES (operation);
   State *state = o->user_data;
   if (!state) return;
+  GeglNode *color2 = state->color2;
 
   GeglNode *blend = state->grainmerge;
   switch (o->blendmode) {
@@ -219,16 +250,19 @@ update_graph (GeglOperation *operation)
     case GEGL_BLEND_MODE_TYPE_SOFTLIGHT: blend = state->softlight; break;
     case GEGL_BLEND_MODE_TYPE_LCHCOLOR: blend = state->lchcolor; break;
     case GEGL_BLEND_MODE_TYPE_OVERLAY: blend = state->overlay; break;
-
-
 default: blend = state->grainmerge;
+
 }
 
-  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend,  state->output,  NULL);
+if (o->blendmode == 0) color2 = state->nocolor2;
+if (o->blendmode < 0) color2 = state->color2;
+
+  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend, state->idref2, state->normal2,  state->output,  NULL);
   gegl_node_link_many (state->idref, state->edge, state->opacity1, state->opacity2,  NULL);
   gegl_node_connect (state->normal, "aux", state->opacity2, "output");
   gegl_node_connect (blend, "aux", state->color, "output");
-
+  gegl_node_connect (state->normal2, "aux", state->opacity4, "output");
+  gegl_node_link_many (state->idref2, color2, state->opacity3, state->opacity4,  NULL);
 
 }
 
