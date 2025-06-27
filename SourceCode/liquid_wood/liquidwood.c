@@ -254,10 +254,10 @@ default: blend = state->grainmerge;
 
 }
 
-/*
+
 if (o->blendmode == 0) colorx = state->nocolor2;
 if (o->blendmode < 0) colorx = state->color2;
-*/
+
   gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend,  state->normal2,  state->output,  NULL);
   gegl_node_link_many (state->idref, state->edge, state->opacity1, state->opacity2,  NULL);
   gegl_node_connect (state->normal, "aux", state->opacity2, "output");
