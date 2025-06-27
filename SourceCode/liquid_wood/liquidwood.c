@@ -239,7 +239,7 @@ update_graph (GeglOperation *operation)
   GeglProperties *o = GEGL_PROPERTIES (operation);
   State *state = o->user_data;
   if (!state) return;
-  GeglNode *color2 = state->color2;
+  GeglNode *colorx = state->color2;
 
   GeglNode *blend = state->grainmerge;
   switch (o->blendmode) {
@@ -254,15 +254,16 @@ default: blend = state->grainmerge;
 
 }
 
-if (o->blendmode == 0) color2 = state->nocolor2;
-if (o->blendmode < 0) color2 = state->color2;
-
-  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend, state->idref2, state->normal2,  state->output,  NULL);
+/*
+if (o->blendmode == 0) colorx = state->nocolor2;
+if (o->blendmode < 0) colorx = state->color2;
+*/
+  gegl_node_link_many (state->noisesolid, state->graph, state->idref, state->normal, blend,  state->normal2,  state->output,  NULL);
   gegl_node_link_many (state->idref, state->edge, state->opacity1, state->opacity2,  NULL);
   gegl_node_connect (state->normal, "aux", state->opacity2, "output");
   gegl_node_connect (blend, "aux", state->color, "output");
   gegl_node_connect (state->normal2, "aux", state->opacity4, "output");
-  gegl_node_link_many (state->idref2, color2, state->opacity3, state->opacity4,  NULL);
+  gegl_node_link_many (colorx, state->opacity3, state->opacity4,  NULL);
 
 }
 
