@@ -1,4 +1,4 @@
-project('liquidwood', 'c',
+project('liquidwooddistortion', 'c',
   version : '0.1',
   license : 'GPL-3.0-or-later')
 
@@ -10,7 +10,7 @@ gegl = dependency('gegl-0.4', required : false)
 if not gegl.found()
     gegl = dependency('gegl-0.5')
 endif
-shlib = shared_library('liquidwood', 'liquidwood.c', 'config.h',
+shlib = shared_library('liquidwooddistortion', 'liquidwooddistortion.c', 'config.h',
   c_args : lib_args,
   dependencies : gegl,
   name_prefix : '',
